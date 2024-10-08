@@ -1,7 +1,14 @@
+# BJTU-Homework-Tracker
 
-# 原理
+北京交通大学智慧课程平台作业抓取
+
+## 技术原理
+
+### 1. 获取课程列表
 
 http://123.121.147.7:88/ve/back/coursePlatform/course.shtml?method=getCourseList&pagesize=100&page=1&xqCode=2024202501
+
+**Response:**
 
 ```json
 {
@@ -21,31 +28,21 @@ http://123.121.147.7:88/ve/back/coursePlatform/course.shtml?method=getCourseList
             "xq_code": "2024202501",
             "boy": "1"
         },
-        {
-            "id": 112524,
-            "name": "C语言程序设计",
-            "course_num": "M202002B",
-            "pic": null,
-            "teacher_id": 3322,
-            "teacher_name": "彭双和",
-            "begin_date": "2024-09-02 00:00:00",
-            "end_date": "2025-01-12 00:00:00",
-            "type": 0,
-            "selective_course_id": null,
-            "fz_id": "2024-2025-1-2M202002B10",
-            "xq_code": "2024202501",
-            "boy": "1"
-        }
+        {...},
+        {...},
+        ...
     ],
     "STATUS": "0",
     "message": "成功",
     "rows": 100,
     "page": 1,
-    "currentRows": 13,
-    "total": 13,
+    "currentRows": 已删除,
+    "total": 已删除,
     "totalPage": 1
 }
 ```
+
+### 2. 获取作业列表
 
 http://123.121.147.7:88/ve/back/coursePlatform/homeWork.shtml?method=getHomeWorkList&cId=112261&subType=1&page=1&pagesize=10
 
