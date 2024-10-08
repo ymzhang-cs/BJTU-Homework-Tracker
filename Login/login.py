@@ -1,5 +1,16 @@
-import cookie as login_cookie
-import mis as login_mis
+from abc import ABC, abstractmethod
+
+from .cookie import Cookie
+from .mis import Mis
+
+# 定义登录方法基类
+class LoginMethod(ABC):
+    @abstractmethod
+    def login(self) -> None:
+        pass
+    @abstractmethod
+    def getCookies(self) -> dict:
+        pass
 
 class Login:
     '''
@@ -7,12 +18,15 @@ class Login:
     '''
     def __init__(self) -> None:
         Login.cookie = None
+        Login.method = None
 
     def login(self, login_type: int|str):
         login_type = int(login_type)
         if login_type == 1:
-            Login.cookie = login_cookie()
+            Login.method = Cookie()
         elif login_type == 2:
-            Login.cookie = login_mis()
+            Login.method = Mis()
         else:
             raise ValueError("Invalid login type")
+        
+        Login.cookie = Login.method.login()

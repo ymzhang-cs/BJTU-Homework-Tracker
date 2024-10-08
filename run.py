@@ -3,10 +3,17 @@ import requests
 from Login.login import Login
 from Search.search import Search
 
+def welcome() -> None:
+    print("欢迎使用作业查询系统")
+    print("本系统支持通过cookie登录或通过MIS登录")
+    print("通过cookie登录：输入1")
+    print("通过MIS登录：输入2")
+    return
+
 def main():
 
     # 欢迎界面
-    print()
+    welcome()
 
     # 登录
     # 1：通过cookie登录
