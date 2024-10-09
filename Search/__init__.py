@@ -1,9 +1,9 @@
 import requests
 
 class Search:
-    '''
+    """
     查询类，支持查询全部作业或查询未完成作业
-    '''
+    """
     def __init__(self, cookie) -> None:
         self.cookie = cookie
         self.course_list = None

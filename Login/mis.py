@@ -1,4 +1,4 @@
-from login import LoginMethod
+from Login.abstract import LoginMethod
 
 class Mis(LoginMethod):
     def __init__(self):
