@@ -18,9 +18,11 @@ pip install -r requirements.txt
 python run.py
 ```
 
-3. 从浏览器获取 Cookie
+3. 从浏览器获取 Cookie，此处需要使用的是 JSESSIONID 这一项。
 
 4. 输入 Cookie，即可使用
+
+如果看不懂，可以参阅 [面向新手的使用方法](FOR_NEWERS.md)
 
 ## TODO
 
