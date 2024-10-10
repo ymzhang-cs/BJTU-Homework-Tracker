@@ -26,3 +26,4 @@ python run.py
 
 - [ ] Search.display() 更美观地显示，更多统计信息
 - [ ] Login.mis 添加MIS账号登录方式
+- [ ] 抓取作业内容富文本识别
