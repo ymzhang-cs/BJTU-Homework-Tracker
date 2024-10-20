@@ -1,5 +1,6 @@
 from Login.cookie import Cookie
 from Login.mis import Mis
+from Login.config import Config
 
 class Login:
     """
@@ -15,6 +16,8 @@ class Login:
             self.method = Cookie()
         elif login_type == 2:
             self.method = Mis()
+        elif login_type == 3:
+            self.method = Config()
         else:
             raise ValueError("Invalid login type")
         

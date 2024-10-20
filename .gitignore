@@ -1,4 +1,7 @@
 .idea/*
 ref/*
+*.pyc
 
 README_RAW.md
+history.txt
+config.yaml

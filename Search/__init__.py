@@ -162,3 +162,23 @@ class Search:
                 print(f"{value}: {homework[key]}")
             print("========================================")
         return
+
+    def output(self) -> str:
+        display_elements = {
+            "course_name": "课程名称",
+            "title": "作业标题",
+            "content": "作业说明",
+            "submitCount": "已提交人数",
+            "allCount": "总人数",
+            "open_date": "发布日期",
+            "end_time": "截止日期",
+            "subStatus": "提交状态"
+        }
+
+        output = ""
+        for homework in self.homework_list:
+            output += "========================================\n"
+            for key, value in display_elements.items():
+                output += f"{value}: {homework[key]}\n"
+            output += "========================================\n"
+        return output
