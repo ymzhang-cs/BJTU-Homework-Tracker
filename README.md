@@ -18,14 +18,15 @@ pip install -r requirements.txt
 python run.py
 ```
 
-3. 从浏览器获取 Cookie，此处需要使用的是 JSESSIONID 这一项。
+3. 选择登录方式，推荐选择第一项 `mis`
 
-4. 输入 Cookie，即可使用
-
-如果看不懂，可以参阅 [面向新手的使用方法](FOR_NEWERS.md)
+4. 工具将自动安装 Chrome Driver（如果没有）。你需要在弹出浏览器窗口后登入 MIS 系统。
 
 ## TODO
 
 - [ ] Search.display() 更美观地显示，更多统计信息
-- [ ] Login.mis 添加MIS账号登录方式
 - [ ] 抓取作业内容富文本识别
+
+## 其他
+
+[如何获取Cookie](FOR_NEWERS.md)

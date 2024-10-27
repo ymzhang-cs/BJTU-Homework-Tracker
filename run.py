@@ -21,11 +21,8 @@ def main() -> None:
     welcome()
 
     # 登录
-    # 1：通过cookie登录
-    # 2：通过MIS登录
-    login_type = input("请选择登录方式：\n1. 通过cookie登录\n2. 通过MIS登录\n3. 从配置文件读取\n")
     my_login = Login()
-    my_login.login(int(login_type))
+    my_login.login()
 
     # 选择查询方式
     # 1：显示全部课程作业
