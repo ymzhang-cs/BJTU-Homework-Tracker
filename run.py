@@ -1,6 +1,8 @@
 from Login import Login
 from Search import Search
-from Output_Processor import OutputProcessor
+from Output import Output
+
+import os
 import yaml
 
 def welcome() -> None:
@@ -9,7 +11,7 @@ def welcome() -> None:
     return
 
 def read_config() -> dict:
-    with open("config.yaml", "r") as f:
+    with open("config.yaml", "r", encoding='utf-8') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     return config
 
@@ -31,17 +33,29 @@ def main() -> None:
     search_type = input("请选择查询方式：\n1. 显示全部课程作业\n2. 显示所有未完成作业\n")
     my_search = Search(my_login.cookie)
     my_search.search(search_type)
-    output = my_search.output()
 
-    my_processor = OutputProcessor(output)
-    output = my_processor.process(method='plain_text')
+    # 显示处理方式
+    print(f"支持的处理方式：")
+    for i in range(len(Output.show_methods())):
+        print(f"{i}. {Output.show_methods()[i]}")
+
+    process_type = input("请选择处理方式（留空使用config）：")
+    if not process_type:
+        process_type = config['process_method']
+        if not process_type:
+            raise Exception("未设置处理方式")
+    else:
+        process_type = Output.show_methods()[int(process_type)]
+
+    my_processor = Output(my_search, method=process_type)
+    output = my_processor.process()
     print(output)
 
-    if config["save_history"]:
-        with open(config["history_file"], "w", encoding='utf-8') as f:
-            f.write(output)
+    # create search_history folder
+    if not os.path.exists('./search_history'):
+        os.mkdir('./search_history')
 
-    pass
+    my_processor.save(f'./search_history/')
 
 if __name__ == '__main__':
     main()
