@@ -17,7 +17,6 @@ def read_config() -> dict:
 
 def main() -> None:
 
-    config = read_config()
 
     # 欢迎界面
     welcome()
@@ -41,6 +40,7 @@ def main() -> None:
 
     process_type = input("请选择处理方式（留空使用config）：")
     if not process_type:
+        config = read_config()
         process_type = config['process_method']
         if not process_type:
             raise Exception("未设置处理方式")
