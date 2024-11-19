@@ -84,6 +84,11 @@ class Html(OutputProcessor):
         soup = bs4.BeautifulSoup(output, 'html.parser')
         self.output = soup.prettify()
 
+        # 返回存储的文件夹路径
+        func_return = "文件将被存储在此文件夹中：" + os.getcwd() + "\\search_history\\"
+        return func_return
+
+
     def save(self, path: str):
         full_path = path + f'/{datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.html'
         
@@ -91,7 +96,6 @@ class Html(OutputProcessor):
             f.write(self.output)
 
         html_full_path = os.path.join(os.getcwd(), full_path[2:])
-        print(html_full_path)
 
         webbrowser.open(html_full_path)
         
