@@ -14,7 +14,7 @@ class Mis(LoginMethod):
     def __init__(self):
         self.cookie = dict()
 
-    def login(self):
+    def login(self, webdriver_path: str = None) -> None:
         """
         通过MIS系统跳转本科生院，登录智慧课程平台获取JSESSIONID
         """
@@ -27,11 +27,12 @@ class Mis(LoginMethod):
         chrome_options.add_argument("--log-level=1")  # 不在控制台输出INFO
         # chrome_options.add_argument("--headless")  # 无头模式运行
 
-        # 如果没有安装ChromeDriver，自动安装
-        chromedriver_autoinstaller.install()
+        # 如果没有传入webdriver_path，且未安装ChromeDriver，自动安装
+        if not webdriver_path:
+            chromedriver_autoinstaller.install()
 
         # 初始化ChromeDriver
-        service = Service()
+        service = Service(executable_path=webdriver_path)
         driver = webdriver.Chrome(service=service, options=chrome_options)
 
         # 用户手动登录MIS跳转本科生院

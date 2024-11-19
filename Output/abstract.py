@@ -21,10 +21,11 @@ class OutputProcessor(ABC):
         pass
 
     @abstractmethod
-    def save(self, path: str) -> None:
+    def save(self, path: str, name: str) -> None:
         """
         保存处理后的内容
-        :param path: 保存路径，不包括文件名，推荐文件名为当前时间
+        :param path: 保存路径，不包括文件名
+        :param name: 文件名
         """
         pass
 

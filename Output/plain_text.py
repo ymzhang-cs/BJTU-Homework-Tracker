@@ -1,3 +1,5 @@
+import os
+
 from Output.abstract import OutputProcessor
 from Search import Search
 
@@ -31,8 +33,8 @@ class PlainText(OutputProcessor):
     def _plain_text(self) -> str:
         return self.soup.get_text(separator='\n')
 
-    def save(self, path: str):
-        full_path = path + f'/{datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.txt'
+    def save(self, path: str, name: str):
+        full_path = os.path.join(path, name + '.txt')
         with open(full_path, 'w', encoding='utf-8') as f:
             f.write(self.process())
         return
