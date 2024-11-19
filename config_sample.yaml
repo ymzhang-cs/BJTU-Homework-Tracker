@@ -1,3 +1,51 @@
-cookie: "YOUR_COOKIE_HERE"
-save_history: true
-history_file: "history.txt"
+##################################################
+# Program Workflow
+#
+# true if you want to use the config file to run the program
+# or false if you want to interact with the program through the console
+use_config_workflows: true
+##################################################
+
+
+# Step 1: Login
+login:
+  active: MIS
+  # Available options: MIS, Cookie
+  MIS:
+    # Path to the webdriver (leave empty if you want to use the default path)
+    webdriver_path: ""
+  Cookie:
+    # Must provided if you choose Cookie login
+    # How to get the cookie > https://github.com/ymzhang-cs/BJTU-Homework-Tracker/blob/master/FOR_NEWERS.md
+    JSESSIONID: ""
+
+
+# Step 2: Select the homework
+
+# The homework you want to select
+# 1: select all homework
+# 2: select unfinished homework
+# 3: select finished homework (not implemented)
+select_homework: 1
+
+
+# Step 3: Process method
+
+# How to process the homework html code
+# 1: convert to plain text (show in console and/or save to file)
+# 2: render to html (show in browser)
+process_method: 1
+
+# Save record to file or not
+save_record:
+  # Save record to file or not
+  active: true
+  # Record file folder
+  save_record_folder: "./search_history"
+  # Record file name
+  # 1. Use timestamp (format configurable)
+  # 2. Custom name (may cover the previous record)
+  save_record_name_type: 1
+  timestamp_format: "%Y-%m-%d %H-%M-%S"
+  custom_name: "search_record"
+
