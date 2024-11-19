@@ -2,9 +2,11 @@ from Search import Search
 
 from Output.abstract import OutputProcessor
 from Output.plain_text import PlainText
+from Output.html import Html
 
 methods = {
-            'plain_text': PlainText
+            'plain_text': PlainText,
+            'html': Html
         }
 
 class Output:
