@@ -7,28 +7,36 @@ class Login:
     """
     登录类，支持通过cookie登录或通过MIS登录
     """
-    def __init__(self) -> None:
+    def __init__(self, method: str = None) -> None:
         self.cookie = None
-        self.method = None
         self.enabled_methods = {
             "mis": Mis,
-            "cookie": Cookie,
-            "config": Config
+            "cookie": Cookie
         }
+        self.method = self.enabled_methods.get(method, None)()
 
     def show_methods(self) -> None:
         print("支持的登录方式：")
         for i, method in enumerate(self.enabled_methods.keys()):
             print(f"{i + 1}. {method}")
 
-    def login(self):
-        self.show_methods()
+    def set_method(self, method: str) -> None:
+        self.method = self.enabled_methods.get(method, None)()
 
-        login_type = int(input("请选择登录方式：\n"))
-        if login_type < 1 or login_type > len(self.enabled_methods):
+    def user_select_method(self) -> None:
+        self.show_methods()
+        method = int(input("请选择登录方式：\n"))
+        if method < 1 or method > len(self.enabled_methods):
             print("输入错误")
             return
-        self.method: LoginMethod = list(self.enabled_methods.values())[login_type - 1]()
-        
-        self.method.login()
+        self.method = list(self.enabled_methods.values())[method - 1]()
+
+    def login(self, **kwargs) -> None:
+        """
+        登录
+        :return:
+        """
+        if self.method is None:
+            raise Exception("未设置登录方式")
+        self.method.login(**kwargs)
         self.cookie = self.method.getCookies()

@@ -24,5 +24,5 @@ class Output:
     def process(self):
         return self.processor.process()
 
-    def save(self, path: str):
-        return self.processor.save(path)
+    def save(self, path: str, name: str):
+        return self.processor.save(path, name)

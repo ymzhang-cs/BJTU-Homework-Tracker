@@ -1,3 +1,5 @@
+import datetime
+
 import requests
 
 class Search:
@@ -49,37 +51,9 @@ class Search:
         }
 
         # 当前学期
-        self.xq = self.getXq()
+        self.xq = self._getXq()
 
-
-
-    def search(self, search_type: int|str) -> list:
-        """
-        查询作业
-        :param search_type: 查询类型，1: 显示全部课程作业 2: 显示所有未完成作业
-        :return:
-        """
-        search_type = int(search_type)  # 1: 显示全部课程作业 2: 显示所有未完成作业
-        if search_type != 1 and search_type != 2:
-            raise ValueError("Invalid search type")
-        
-        self.course_list = self.getCourseList()
-        if self.print_detail:
-            print(f"已查询到{len(self.course_list)}门课程")
-            print("========================================")
-            for course in self.course_list:
-                print(f"{course['name']}, {course['teacher_name']}")
-            print("========================================")
-
-        for course_index in range(len(self.course_list)):
-            self.homework_list += self.getHomeworkList(course_index)
-
-        if search_type == 2:
-            self.filter(unfinished_only=True)
-
-        return self.homework_list
-
-    def requestGet(self, url: str, referer_type: int, referer_info: dict = None, referer_value: str = None) -> dict:
+    def _requestGet(self, url: str, referer_type: int, referer_info: dict = None, referer_value: str = None) -> dict:
         header = self.common_header
         if referer_type == 0:
             header["Referer"] = self.header_referer["CourseList"]
@@ -91,21 +65,21 @@ class Search:
         response = requests.get(url, headers=header)
         return response.json()
 
-    def getXq(self) -> str:
+    def _getXq(self) -> str:
         url = "http://123.121.147.7:88/ve/back/rp/common/teachCalendar.shtml?method=queryCurrentXq"
         referer_value = "http://123.121.147.7:88/ve/back/rp/common/teachCalendar.shtml?method=queryCurrentXq"
-        response = self.requestGet(url, referer_type=-1, referer_value=referer_value)
+        response = self._requestGet(url, referer_type=-1, referer_value=referer_value)
         if self.print_detail:
             print(f"当前学期: {response['result'][0]['xqCode']}")
         return response["result"][0]["xqCode"]
 
-    def getCourseList(self) -> list:
+    def _getCourseList(self) -> list:
         url = ("http://123.121.147.7:88/ve/back/coursePlatform/course.shtml?"
                "method=getCourseList&pagesize=100&page=1&xqCode={xq}").format(xq = self.xq)
-        response = self.requestGet(url, referer_type=0)
+        response = self._requestGet(url, referer_type=0)
         return response["courseList"]
 
-    def getHomeworkList(self, course_index: int) -> list:
+    def _getHomeworkList(self, course_index: int) -> list:
         course_info = self.course_list[course_index]
 
         if self.print_detail:
@@ -128,7 +102,7 @@ class Search:
         for homework_type, page_id in enumerate([10460, 10461, 10462]):
             type_url = url.format(course_id=course_id, homework_type=homework_type)
             referer_info["page_id"] = page_id
-            response = self.requestGet(type_url, referer_type=1, referer_info=referer_info)
+            response = self._requestGet(type_url, referer_type=1, referer_info=referer_info)
             if response['message'] == '没有数据':
                 continue
             homework_list += response["courseNoteList"]
@@ -137,31 +111,77 @@ class Search:
             print(f"已查询到{len(homework_list)}条作业")
 
         return homework_list
-    
-    def filter(self, unfinished_only: bool = False, course_keyword: str = None) -> None:
-        if unfinished_only:
-            self.homework_list = [homework for homework in self.homework_list if homework["subStatus"] == "未提交"]
-        if course_keyword:
-            self.homework_list = [homework for homework in self.homework_list if course_keyword in homework["course_name"]]
 
-    def display(self) -> None:
-        display_elements = {
-            "course_name": "课程名称",
-            "title": "作业标题",
-            "content": "作业说明",
-            "submitCount": "已提交人数",
-            "allCount": "总人数",
-            "open_date": "发布日期",
-            "end_time": "截止日期",
-            "subStatus": "提交状态"
-        }
+    @staticmethod
+    def _filter_course_keyword(positive_keyword: list, negative_keyword: list, homework: dict) -> bool:
+        for keyword in positive_keyword:
+            if keyword not in homework["course_name"]:
+                return False
+        for keyword in negative_keyword:
+            if keyword in homework["course_name"]:
+                return False
+        return True
 
-        for homework in self.homework_list:
+    @staticmethod
+    def _filter_finish_status(finish_status: str, homework: dict) -> bool:
+        if finish_status == "all":
+            return True
+        elif finish_status == "finished":
+            return homework["subStatus"] == "已提交"
+        elif finish_status == "unfinished":
+            return homework["subStatus"] == "未提交"
+        else:
+            raise ValueError("finish_status 参数错误")
+
+    @staticmethod
+    def _filter_expired(ignore_expired_n_days: int, ignore_unexpired_n_days: int, homework: dict) -> bool:
+        """
+        利用homework["end_date"]对比当前日期，判断是否已经过期太久，或者距离截止日期还很久
+        """
+        end_date = datetime.datetime.strptime(homework["end_time"], "%Y-%m-%d %H:%M")
+        today = datetime.datetime.today()
+        if end_date < today - datetime.timedelta(days=ignore_expired_n_days):
+            return False
+        if end_date > today + datetime.timedelta(days=ignore_unexpired_n_days):
+            return False
+        return True
+
+    def search(self) -> None:
+        """
+        查询作业
+        :return:
+        """
+        self.course_list = self._getCourseList()
+        if self.print_detail:
+            print(f"已查询到{len(self.course_list)}门课程")
             print("========================================")
-            for key, value in display_elements.items():
-                print(f"{value}: {homework[key]}")
+            for course in self.course_list:
+                print(f"{course['name']}, {course['teacher_name']}")
             print("========================================")
-        return
+
+        for course_index in range(len(self.course_list)):
+            self.homework_list += self._getHomeworkList(course_index)
+
+    def select(self,
+               course_positive_keyword: list|tuple = (),
+               course_negative_keyword: list|tuple = (),
+               finish_status:  str  = "unfinished",
+               ignore_expired_n_days: int = 15,
+               ignore_unexpired_n_days: int = 90,
+               ):
+        """
+        选择作业
+        """
+        # 应用keyword筛选
+        self.homework_list = [homework for homework in self.homework_list
+                              if self._filter_course_keyword(course_positive_keyword, course_negative_keyword, homework)]
+        # 应用finish_status筛选
+        self.homework_list = [homework for homework in self.homework_list
+                              if self._filter_finish_status(finish_status, homework)]
+        # 应用expired筛选
+        self.homework_list = [homework for homework in self.homework_list
+                              if self._filter_expired(ignore_expired_n_days, ignore_unexpired_n_days, homework)]
+
 
     def output(self) -> str:
         display_elements = {
@@ -182,3 +202,7 @@ class Search:
                 output += f"{value}: {homework[key]}\n"
             output += "========================================\n"
         return output
+
+    def display(self) -> None:
+        print(self.output())
+        return

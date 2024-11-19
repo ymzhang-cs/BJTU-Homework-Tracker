@@ -89,8 +89,8 @@ class Html(OutputProcessor):
         return func_return
 
 
-    def save(self, path: str):
-        full_path = path + f'/{datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.html'
+    def save(self, path: str, name: str) -> None:
+        full_path = os.path.join(path, name + '.html')
         
         with open(full_path, 'w', encoding='utf-8') as f:
             f.write(self.output)
