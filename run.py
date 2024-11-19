@@ -49,7 +49,11 @@ def main() -> None:
 
     my_processor = Output(my_search, method=process_type)
     output = my_processor.process()
-    print(output)
+
+    if process_type == 'plain_text':
+        print(output)
+    elif process_type == 'html':
+        pass
 
     # create search_history folder
     if not os.path.exists('./search_history'):
