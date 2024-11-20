@@ -35,6 +35,7 @@ def main() -> None:
         login_method = config['login']['active']
         login_args = config['login'][login_method]
 
+
     # 初始化登录类
     my_login = Login(login_method)
 
@@ -103,7 +104,7 @@ def main() -> None:
     if not os.path.exists(save_path):
         os.mkdir(save_path)
 
-    my_processor.save(f'./search_history/', save_name)
+    my_processor.save(save_path, save_name)
 
 if __name__ == '__main__':
     main()

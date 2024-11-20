@@ -112,7 +112,7 @@ class Html(OutputProcessor):
         with open(full_path, 'w', encoding='utf-8') as f:
             f.write(self.output)
 
-        html_full_path = os.path.join(os.getcwd(), full_path[2:])
+        html_full_path = os.path.join(os.getcwd(), full_path[:])
 
         webbrowser.open(html_full_path)
         
