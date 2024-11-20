@@ -18,7 +18,12 @@ login:
     # Must be provided if you choose Cookie login
     # How to get the cookie > https://github.com/ymzhang-cs/BJTU-Homework-Tracker/blob/master/FOR_NEWERS.md
     JSESSIONID: ""
-
+  cp:
+    student_id: "23114514"
+    password: "pass:Bjtu@23114514"
+    # password: "hash:0f932b38dd9ac1a09b4c38febf01fab0"
+    # leave it empty for default password
+    # password: ""
 
 # Step 3: Select the homework
 select:
