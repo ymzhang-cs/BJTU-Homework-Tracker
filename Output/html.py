@@ -42,6 +42,11 @@ class Html(OutputProcessor):
         .course-card label {
                 font-weight: bold;
             }
+
+        .course-card img {
+                height: auto;
+                max-width: 50%;
+            }
         </style>
     </head>
 
@@ -63,12 +68,16 @@ class Html(OutputProcessor):
         output = ""
         output += self.html_head
 
+        # 因为plain_text中存在 '========' 行，所以需要一个标志位来判断是否需要添加div
         now_equal_flag = 1
 
         for homework in self.html:
-            if homework == "":
+
+            # 判断字符串是否为空
+            if not homework:
                 continue
 
+            homework = homework.strip()
             if homework[0] == "=":
                 if now_equal_flag == 1:
                     output += "<div class=\"course-card\">\n"
@@ -77,7 +86,15 @@ class Html(OutputProcessor):
                     output += "</div>\n"
                     now_equal_flag = 1
             else:
-                output += f'<div>{homework}</div>\n'
+                # 确保里面存在冒号 是合法的
+                if ':' in homework:
+                    parts = homework.split(":", 1)
+                    label = parts[0]
+                    content = parts[1] if len(parts) > 1 else ""
+                    output += f'<div><label>{label}: </label><span>{content}</span></div>\n'
+                    print(content)
+                else:
+                    continue
 
         output += self.html_tail
 

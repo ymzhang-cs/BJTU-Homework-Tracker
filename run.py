@@ -89,7 +89,7 @@ def main() -> None:
         name_type = save_args['save_record_name_type']
         if name_type == 1:
             save_name = datetime.datetime.now().strftime(save_args['timestamp_format'])
-        elif name_type == '2':
+        elif name_type == 2:
             save_name = save_args['custom_name']
         else:
             raise Exception("未知的保存方式")
