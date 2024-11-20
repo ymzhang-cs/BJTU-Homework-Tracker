@@ -13,7 +13,8 @@ class Login:
             "mis": Mis,
             "cookie": Cookie
         }
-        self.method = self.enabled_methods.get(method, None)()
+        if method is not None:
+            self.method = self.enabled_methods.get(method, None)()
 
     def show_methods(self) -> None:
         print("支持的登录方式：")
