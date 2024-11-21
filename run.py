@@ -105,9 +105,9 @@ def main() -> None:
         else:
             save = False
 
-            # 如果是html文件，就要特判
-            if process_type == 'html':
-                save = True
+    # 如果是html文件，就要特判
+    if process_type == 'html':
+        save = True
 
     # 只有保存才会调用
     if save:
