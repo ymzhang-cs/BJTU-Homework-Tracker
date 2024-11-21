@@ -34,6 +34,10 @@ class PlainText(OutputProcessor):
         return self.soup.get_text(separator='\n')
 
     def save(self, path: str, name: str):
+
+        if not os.path.exists(path):
+            os.mkdir(path)
+
         full_path = os.path.join(path, name + '.txt')
         with open(full_path, 'w', encoding='utf-8') as f:
             f.write(self.process())
