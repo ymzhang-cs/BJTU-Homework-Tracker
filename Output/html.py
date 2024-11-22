@@ -6,6 +6,8 @@ import webbrowser
 import os
 import bs4
 
+from GLOBAL import GLOBAL_CONFIG
+
 class Html(OutputProcessor):
     def __init__(self, search: Search) -> None:
         html = search.output()
@@ -92,7 +94,6 @@ class Html(OutputProcessor):
                     label = parts[0]
                     content = parts[1] if len(parts) > 1 else ""
                     output += f'<div><label>{label}: </label><span>{content}</span></div>\n'
-                    print(content)
                 else:
                     continue
 
@@ -101,21 +102,29 @@ class Html(OutputProcessor):
         soup = bs4.BeautifulSoup(output, 'html.parser')
         self.output = soup.prettify()
 
-        # 返回存储的文件夹路径
-        func_return = "文件将被存储在此文件夹中：" + os.getcwd() + "\\search_history\\"
+        func_return = "已处理完成"
         return func_return
 
-
     def save(self, path: str, name: str) -> None:
+        '''
+        需要注意 如果用户选择用html 就不得不选择保存html文件的办法
+        '''
+        # create save folder   
+        if not os.path.exists(path):
+            os.mkdir(path)
+
         full_path = os.path.join(path, name + '.html')
         
         with open(full_path, 'w', encoding='utf-8') as f:
             f.write(self.output)
 
-        html_full_path = os.path.join(os.getcwd(), full_path[:])
+        html_full_path = os.path.join(os.getcwd(), full_path)
 
         webbrowser.open(html_full_path)
         
+        print("========= 再次提醒 =========\n无论您在上次选择中是否选择保存，都会生成html文件！")
+        print(f"文件已保存至：{html_full_path}")
+
         return
     
 if __name__ == "__main__":
