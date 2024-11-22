@@ -13,7 +13,7 @@ import yaml
 
 def welcome(use_config_workflows: bool) -> None:
     print("欢迎使用作业查询系统")
-    print("本系统支持通过cookie登录或通过MIS登录")
+    print("本系统支持通过cookie登录、通过课程平台默认密码登录或通过MIS登录")
     print("当前模式：", "使用config" if use_config_workflows else "手动选择")
     return
 
@@ -36,8 +36,8 @@ def main() -> None:
     login_args = None
     if use_config_workflows:
         login_method = GLOBAL_CONFIG['login']['active']
-        login_args = GLOBAL_CONFIG['login'][login_method]
-
+        assert type(GLOBAL_CONFIG['login']) == dict
+        login_args = GLOBAL_CONFIG['login'].get(login_method, {})
 
     # 初始化登录类
     my_login = Login(login_method)

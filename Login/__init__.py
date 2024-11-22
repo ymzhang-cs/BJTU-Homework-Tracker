@@ -2,6 +2,7 @@ from Login.abstract import LoginMethod
 from Login.cookie import Cookie
 from Login.mis import Mis
 from Login.config import Config
+from Login.cp import CoursePlatform
 
 class Login:
     """
@@ -11,7 +12,8 @@ class Login:
         self.cookie = None
         self.enabled_methods = {
             "mis": Mis,
-            "cookie": Cookie
+            "cookie": Cookie,
+            "cp": CoursePlatform
         }
         if method is not None:
             self.method = self.enabled_methods.get(method, None)()
