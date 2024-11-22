@@ -135,9 +135,14 @@ class Search:
 
     @staticmethod
     def _filter_expired(ignore_expired_n_days: int, ignore_unexpired_n_days: int, homework: dict) -> bool:
+        
         """
-        利用homework["end_date"]对比当前日期，判断是否已经过期太久，或者距离截止日期还很久
+        利用homework["end_date"]对比当前日期，判断是否已经过期太久，或者距离截止日期还很久,并且判断是否存在没有截止日期的问题   
         """
+        end_time_str = homework.get("end_time", "")
+        # 特判当前作业没有截止日期
+        if not end_time_str:
+            return True
         end_date = datetime.datetime.strptime(homework["end_time"], "%Y-%m-%d %H:%M")
         today = datetime.datetime.today()
         if end_date < today - datetime.timedelta(days=ignore_expired_n_days):
@@ -199,7 +204,10 @@ class Search:
         for homework in self.homework_list:
             output += "========================================\n"
             for key, value in display_elements.items():
-                output += f"{value}: {homework[key]}\n"
+                if homework[key] != "":
+                    output += f"{value}: {homework[key]}\n"
+                else:
+                    output+= f"{value}:教师未设置{value}\n"
             output += "========================================\n"
         return output
 
