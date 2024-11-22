@@ -105,6 +105,9 @@ class Search:
             response = self._requestGet(type_url, referer_type=1, referer_info=referer_info)
             if response['message'] == '没有数据':
                 continue
+            for homework in response["courseNoteList"]:#如果当前作业不存在截止日期，返回提示
+                if not homework.get("end_time"):
+                    print(f"警告：作业 {homework['title']} 的结束时间为空")
             homework_list += response["courseNoteList"]
 
         if self.print_detail:
@@ -135,6 +138,18 @@ class Search:
 
     @staticmethod
     def _filter_expired(ignore_expired_n_days: int, ignore_unexpired_n_days: int, homework: dict) -> bool:
+        end_time_str = homework.get("end_time", "")
+        homework_name = homework.get("name","未知作业")
+        if not end_time_str:
+            # 如果当前作业没有截止日期
+            print(f"注意：该作业{homework_name}没有截止日期")
+            return False
+        try:
+            end_date = datetime.datetime.strptime(end_time_str, "%Y-%m-%d %H:%M")
+        except ValueError:
+            # 如果当前作业没有截止日期
+            print(f"注意：该作业{homework_name}没有截止日期")
+            return False
         """
         利用homework["end_date"]对比当前日期，判断是否已经过期太久，或者距离截止日期还很久
         """
