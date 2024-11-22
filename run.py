@@ -4,6 +4,10 @@ from Login import Login
 from Search import Search
 from Output import Output
 
+# 注意 这里引入了全局常量
+# Attention: This imports global variables
+from GLOBAL import GLOBAL_CONFIG
+
 import os
 import yaml
 
@@ -13,16 +17,15 @@ def welcome(use_config_workflows: bool) -> None:
     print("当前模式：", "使用config" if use_config_workflows else "手动选择")
     return
 
-def read_config() -> dict:
-    with open("config.yaml", "r", encoding='utf-8') as f:
-        config = yaml.load(f, Loader=yaml.FullLoader)
-    return config
+# def read_config() -> dict:
+#     with open("config.yaml", "r", encoding='utf-8') as f:
+#         config = yaml.load(f, Loader=yaml.FullLoader)
+#     return config
 
 def main() -> None:
 
     # 初始化：读取配置文件
-    config = read_config()
-    use_config_workflows = config['use_config_workflows']
+    use_config_workflows = GLOBAL_CONFIG['use_config_workflows']
 
     # 欢迎界面
     welcome(use_config_workflows)
@@ -32,9 +35,9 @@ def main() -> None:
     login_method = None
     login_args = None
     if use_config_workflows:
-        login_method = config['login']['active']
-        assert type(config['login']) == dict
-        login_args = config['login'].get(login_method, {})
+        login_method = GLOBAL_CONFIG['login']['active']
+        assert type(GLOBAL_CONFIG['login']) == dict
+        login_args = GLOBAL_CONFIG['login'].get(login_method, {})
 
     # 初始化登录类
     my_login = Login(login_method)
@@ -54,9 +57,9 @@ def main() -> None:
 
     # Step 3. 课程筛选
     if use_config_workflows:
-        select_status = config['select']['active']
+        select_status = GLOBAL_CONFIG['select']['active']
         if select_status:
-            select_args = config['select']['conditions']
+            select_args = GLOBAL_CONFIG['select']['conditions']
             my_search.select(**select_args)
         else:
             print("提示：配置文件中未启用筛选条件")
@@ -68,7 +71,7 @@ def main() -> None:
     # Step 4. 处理
     process_type = None
     if use_config_workflows:
-        process_type = config['process_method']
+        process_type = GLOBAL_CONFIG['process_method']
     else:
         print("支持的处理方式：", Output.show_methods())
         process_type = input("请选择处理方式：")
@@ -79,32 +82,36 @@ def main() -> None:
     print(output)
 
     # Step 5. 保存
-    save = True
-    save_path = './search_history/'
-    save_name = None
+    save_config = GLOBAL_CONFIG['save_record']
+
+    save = save_config['active']
+    save_path = save_config['save_record_folder']
+    save_name = save_config['custom_name']
+    name_type = save_config['save_record_name_type']
 
     if use_config_workflows:
-        save_args = config['save_record']
-        save = save_args['active']
-        save_path = save_args['save_record_folder']
-        name_type = save_args['save_record_name_type']
         if name_type == 1:
-            save_name = datetime.datetime.now().strftime(save_args['timestamp_format'])
+            save_name = datetime.datetime.now().strftime(save_config['timestamp_format'])
         elif name_type == 2:
-            save_name = save_args['custom_name']
+            save_name = save_config['custom_name']
         else:
             raise Exception("未知的保存方式")
     else:
-        save = input("是否保存？(y/n)")
+        save = input("\n========= 需要注意 =========\n如果您选择了用html展示，不管您是否选择保存，都会生成html文件！\n是否保存？请您选择(y/n)：")
         if save == 'y':
+            save = True
             save_path = input("请输入保存路径：")
             save_name = input("请输入保存文件名：")
+        else:
+            save = False
 
-    # create search_history folder
-    if not os.path.exists(save_path):
-        os.mkdir(save_path)
+    # 如果是html文件，就要特判
+    if process_type == 'html':
+        save = True
 
-    my_processor.save(f'./search_history/', save_name)
+    # 只有保存才会调用
+    if save:
+        my_processor.save(save_path, save_name)
 
 if __name__ == '__main__':
     main()
