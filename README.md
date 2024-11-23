@@ -1,11 +1,13 @@
 # BJTU-Homework-Tracker
 
-![Latest Tag](https://img.shields.io/github/v/tag/ymzhang-cs/BJTU-Homework-Tracker)
+![Visitors](https://api.visitorbadge.io/api/daily?path=ymzhang-cs%2FBJTU-Homework-Tracker&countColor=%23263759)
 
+![Latest Tag](https://img.shields.io/github/v/tag/ymzhang-cs/BJTU-Homework-Tracker)
 ![GitHub contributors](https://img.shields.io/github/contributors/ymzhang-cs/BJTU-Homework-Tracker)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/ymzhang-cs/BJTU-Homework-Tracker)
 ![GitHub last commit](https://img.shields.io/github/last-commit/ymzhang-cs/BJTU-Homework-Tracker)
 ![GitHub](https://img.shields.io/github/license/ymzhang-cs/BJTU-Homework-Tracker)
+
 
 北京交通大学智慧课程平台作业抓取
 
