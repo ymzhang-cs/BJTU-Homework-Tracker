@@ -14,11 +14,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from Login.abstract import LoginMethod
 
 
-class Mis:
+class Mis(LoginMethod):
     def __init__(self):
         self.cookie = dict()
 
-    def login(self, browser: str = 'edge', webdriver_path: str = None) -> None:
+    def login(self, browser: str = 'chrome', webdriver_path: str = None) -> None:
 
         login_url = 'https://mis.bjtu.edu.cn/module/module/104/'
         jump_page = 'https://bksycenter.bjtu.edu.cn/NoMasterJumpPage.aspx?URL=jwcZhjx&FPC=page:jwcZhjx'
@@ -40,7 +40,7 @@ class Mis:
             driver = webdriver.Edge(service=service, options=options)
 
         else:
-            raise ValueError("Unsupported browser type. Please use 'chrome' or 'edge'.")
+            raise ValueError("不支持的类型，请选择chorme或者edge")
 
         driver.get(login_url)
         WebDriverWait(driver, 1000).until(EC.presence_of_element_located((By.ID, 'divLogin')))
