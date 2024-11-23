@@ -14,6 +14,7 @@ login:
   mis:
     # Path to the webdriver (leave empty if you want to use the default path)
     webdriver_path: ""
+    browser: edge
   cookie:
     # Must be provided if you choose Cookie login
     # How to get the cookie > https://github.com/ymzhang-cs/BJTU-Homework-Tracker/blob/master/FOR_NEWERS.md
