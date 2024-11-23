@@ -24,17 +24,17 @@ class Html(OutputProcessor):
 
         .course-container {
                 display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
+                flex-flow: row wrap;
+                justify-content: space-around;
             }
 
         .course-card {
-                width: 45%;
+                flex-grow: 1;
                 background-color: #f5f5f5;
                 padding: 20px;
                 border-radius: 10px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                margin-bottom: 20px;
+                margin: 1rem;
             }
 
         .course-card div {
