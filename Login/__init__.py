@@ -4,6 +4,7 @@ from Login.mis import Mis
 from Login.config import Config
 from Login.cp import CoursePlatform
 
+
 from GLOBAL import GLOBAL_CONFIG
 
 class Login:
