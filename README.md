@@ -69,6 +69,19 @@ python run.py
 - [ ] 更好的 WebDriver 配置模式 [#9](https://github.com/ymzhang-cs/BJTU-Homework-Tracker/issues/9)
 - [ ] 考虑使用 PyInquirer 交互式配置 [#16](https://github.com/ymzhang-cs/BJTU-Homework-Tracker/issues/16)
 
-## 参考资料
+## Contributing
 
-[如何获取Cookie](FOR_NEWERS.md)
+欢迎提交 PR 和 issue，为这个项目贡献你的力量。
+
+如果你有任何问题或者想法，请提交 issue。 若要认领 issue，请在 issue 下评论，我们会将 issue 分配给你。
+如果有想要实现的功能，请先提交 issue 并认领，然后再提交 PR。
+
+与 issue 关联的 PR 请在提交 PR 时在 PR 描述中注明 `Fixes #xx`，以便 issue 关联。没有关联任何 issue 的 PR 会被关闭。
+
+## License
+
+我们采用 [MIT](LICENSE) 开源许可证。
+
+## References
+
+- [如何获取Cookie](FOR_NEWERS.md)
