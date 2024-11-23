@@ -29,24 +29,26 @@
 
 ## 快速上手
 
-0. 克隆仓库
+**0. 克隆仓库**
 
 ```bash
 git clone https://github.com/ymzhang-cs/BJTU-Homework-Tracker.git
 cd BJTU-Homework-Tracker
 ```
 
-1. 安装依赖
+**1. 安装依赖**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-2. 配置config.yaml（可选，推荐）
+**2. 配置 config.yaml（可选，推荐）**
 
-参考config_sample.yaml的注释填写即可。
+工具支持 config 工作流配置和命令行实时配置两种控制方式。后者直接跳至第3步即可，下面介绍 config 配置方式。
 
-3. 运行
+拷贝 config_sample.yaml 为 config.yaml，并且参考相关注释填写即可。
+
+**3. 运行 run.py**
 
 ```bash
 python run.py
