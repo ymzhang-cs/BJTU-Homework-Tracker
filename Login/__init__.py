@@ -41,5 +41,19 @@ class Login:
         """
         if self.method is None:
             raise Exception("未设置登录方式")
+
+        #在这里选择浏览器
+        print("请选择你的浏览器")
+        print("1. Chrome")
+        print("2. Edge")
+        browser_choice = int(input().strip())
+        if browser_choice == 1:
+            browser = 'chrome'
+        elif browser_choice == 2:
+            browser = 'edge'
+        else:
+            raise ValueError("Unsupported browser type. Please select 1 for Chrome or 2 for Edge.")
+
+        kwargs['browser'] = browser
         self.method.login(**kwargs)
         self.cookie = self.method.getCookies()
