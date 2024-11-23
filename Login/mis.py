@@ -1,12 +1,15 @@
 import requests
 import chromedriver_autoinstaller
 import edgedriver_autoinstaller
+import geckodriver_autoinstaller
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.edge.options import Options as EdgeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -39,10 +42,18 @@ class Mis(LoginMethod):
             service = EdgeService(executable_path=webdriver_path)
             driver = webdriver.Edge(service=service, options=options)
 
+        elif browser == 'Firefox':
+            options = FirefoxOptions()
+            options.log.level = "fatal"
+            if not webdriver_path:
+                webdriver_path = geckodriver_autoinstaller.install()
+                service = FirefoxService(executable_path=webdriver_path)
+                driver = webdriver.Firefox(service=service,options=options)
         else:
             raise ValueError("不支持的类型，请选择chorme或者edge")
 
         driver.get(login_url)
+        
         WebDriverWait(driver, 1000).until(EC.presence_of_element_located((By.ID, 'divLogin')))
         driver.get(jump_page)
         cookies = driver.get_cookies()
