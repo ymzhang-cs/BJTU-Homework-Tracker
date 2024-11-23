@@ -4,6 +4,9 @@ from Login.mis import Mis
 from Login.config import Config
 from Login.cp import CoursePlatform
 
+
+from GLOBAL import GLOBAL_CONFIG
+
 class Login:
     """
     登录类，支持通过cookie登录或通过MIS登录
@@ -41,18 +44,22 @@ class Login:
         """
         if self.method is None:
             raise Exception("未设置登录方式")
-        if self.method is mis:
+        if type(self.method) == Mis:
             #在这里选择浏览器
-            print("请选择你的浏览器")
-            print("1. Chrome")
-            print("2. Edge")
-            browser_choice = int(input().strip())
-            if browser_choice == 1:
-                browser = 'chrome'
-            elif browser_choice == 2:
-                browser = 'edge'
-            else:
-                raise ValueError("请选择1或者2")
+            browser = ""
+            if GLOBAL_CONFIG['use_config_workflows']:
+                browser = GLOBAL_CONFIG['login']['mis']['browser']
+            else:   
+                print("请选择你的浏览器")
+                print("1. Chrome")
+                print("2. Edge")
+                browser_choice = int(input().strip())
+                if browser_choice == 1:
+                    browser = 'chrome'
+                elif browser_choice == 2:
+                    browser = 'edge'
+                else:
+                    raise ValueError("请选择1或者2")
 
             kwargs['browser'] = browser
         self.method.login(**kwargs)
