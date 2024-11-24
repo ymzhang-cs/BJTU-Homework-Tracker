@@ -1,4 +1,6 @@
 import requests
+import sys
+import winreg
 import chromedriver_autoinstaller
 import edgedriver_autoinstaller
 from selenium import webdriver
@@ -25,6 +27,9 @@ class Mis(LoginMethod):
 
         if browser == 'chrome':
             options = ChromeOptions()
+            path = self.find_path("chrome")
+            path = path + r"\chrome.exe"
+            options.binary_location = path
             options.add_argument("--log-level=1")
             if not webdriver_path:
                 webdriver_path = chromedriver_autoinstaller.install()
@@ -33,6 +38,9 @@ class Mis(LoginMethod):
 
         elif browser == 'edge':
             options = EdgeOptions()
+            path = self.find_path("edge")
+            path = path + r"\msedge.exe"
+            options.binary_location = path
             options.add_argument("--log-level=1")
             if not webdriver_path:
                 webdriver_path = edgedriver_autoinstaller.install()
@@ -40,7 +48,7 @@ class Mis(LoginMethod):
             driver = webdriver.Edge(service=service, options=options)
 
         else:
-            raise ValueError("不支持的类型，请选择chorme或者edge")
+            raise ValueError("不支持的类型，请选择chrome或者edge")
 
         driver.get(login_url)
         WebDriverWait(driver, 1000).until(EC.presence_of_element_located((By.ID, 'divLogin')))
@@ -56,3 +64,33 @@ class Mis(LoginMethod):
 
     def getCookies(self):
         return self.cookie
+
+    def find_path(self,software_name=None):
+        if software_name == "chrome":
+            software_name = "chrome.exe"
+        elif software_name == "edge":
+            software_name = "msedge.exe"
+        else:
+            raise ValueError("不支持的类型，请选择chrome或者edge")
+        try:
+            #打开windows注册表
+            reg = winreg.ConnectRegistry(None, winreg.HKEY_LOCAL_MACHINE)
+            key = winreg.OpenKey(reg, r"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths")
+
+            #遍历注册表
+            for i in range(winreg.QueryInfoKey(key)[0]):
+                sub_key_name = winreg.EnumKey(key, i)
+                try:
+                    sub_key = winreg.OpenKey(key, sub_key_name)
+                    path = winreg.QueryValueEx(sub_key, "Path")[0]
+                    if software_name == sub_key_name:
+                        return path
+                except OSError:
+                    pass
+
+            #关闭注册表
+            winreg.CloseKey(key)
+            winreg.CloseKey(reg)
+        except OSError:
+            pass
+        return None
