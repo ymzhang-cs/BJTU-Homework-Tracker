@@ -47,8 +47,8 @@ class Mis(LoginMethod):
             options.log.level = "fatal"
             if not webdriver_path:
                 webdriver_path = geckodriver_autoinstaller.install()
-                service = FirefoxService(executable_path=webdriver_path)
-                driver = webdriver.Firefox(service=service,options=options)
+            service = FirefoxService(executable_path=webdriver_path)
+            driver = webdriver.Firefox(service=service,options=options)
         else:
             raise ValueError("不支持的类型，请选择chorme或者edge")
 
