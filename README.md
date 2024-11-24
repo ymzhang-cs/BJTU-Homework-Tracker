@@ -1,6 +1,6 @@
 # BJTU-Homework-Tracker
 
-![Visitors](https://api.visitorbadge.io/api/daily?path=ymzhang-cs%2FBJTU-Homework-Tracker&countColor=%23263759)
+![Visitors](https://api.visitorbadge.io/api/visitors?path=ymzhang-cs%2FBJTU-Homework-Tracker&countColor=%23263759)
 
 ![Latest Tag](https://img.shields.io/github/v/tag/ymzhang-cs/BJTU-Homework-Tracker)
 ![GitHub contributors](https://img.shields.io/github/contributors/ymzhang-cs/BJTU-Homework-Tracker)
