@@ -6,8 +6,6 @@ import webbrowser
 import os
 import bs4
 
-from GLOBAL import GLOBAL_CONFIG
-
 class Html(OutputProcessor):
     def __init__(self, search: Search) -> None:
         html = search.output()
@@ -122,7 +120,7 @@ class Html(OutputProcessor):
 
         webbrowser.open(html_full_path)
         
-        print("========= 再次提醒 =========\n无论您在上次选择中是否选择保存，都会生成html文件！")
+        print("========= 提醒 =========\n无论是否选择保存，都会生成html文件！")
         print(f"文件已保存至：{html_full_path}")
 
         return

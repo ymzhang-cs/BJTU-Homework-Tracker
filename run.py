@@ -4,9 +4,7 @@ from Login import Login
 from Search import Search
 from Output import Output
 
-# 注意 这里引入了全局常量
-# Attention: This imports global variables
-from GLOBAL import GLOBAL_CONFIG
+from Settings.user_preferences_config import user_preferences
 
 import os
 import yaml
@@ -17,15 +15,10 @@ def welcome(use_config_workflows: bool) -> None:
     print("当前模式：", "使用config" if use_config_workflows else "手动选择")
     return
 
-# def read_config() -> dict:
-#     with open("config.yaml", "r", encoding='utf-8') as f:
-#         config = yaml.load(f, Loader=yaml.FullLoader)
-#     return config
-
 def main() -> None:
 
     # 初始化：读取配置文件
-    use_config_workflows = GLOBAL_CONFIG['use_config_workflows']
+    use_config_workflows = user_preferences.get_use_config_workflows()
 
     # 欢迎界面
     welcome(use_config_workflows)
@@ -35,9 +28,8 @@ def main() -> None:
     login_method = None
     login_args = None
     if use_config_workflows:
-        login_method = GLOBAL_CONFIG['login']['active']
-        assert type(GLOBAL_CONFIG['login']) == dict
-        login_args = GLOBAL_CONFIG['login'].get(login_method, {})
+        login_method = user_preferences.get_login_active()
+        login_args = user_preferences.return_login_args()
 
     # 初始化登录类
     my_login = Login(login_method)
@@ -57,9 +49,9 @@ def main() -> None:
 
     # Step 3. 课程筛选
     if use_config_workflows:
-        select_status = GLOBAL_CONFIG['select']['active']
+        select_status = user_preferences.get_select_active()
         if select_status:
-            select_args = GLOBAL_CONFIG['select']['conditions']
+            select_args = user_preferences.return_select_args()
             my_search.select(**select_args)
         else:
             print("提示：配置文件中未启用筛选条件")
@@ -71,7 +63,7 @@ def main() -> None:
     # Step 4. 处理
     process_type = None
     if use_config_workflows:
-        process_type = GLOBAL_CONFIG['process_method']
+        process_type = user_preferences.get_process_method()
     else:
         print("支持的处理方式：", Output.show_methods())
         process_type = input("请选择处理方式：")
@@ -82,18 +74,16 @@ def main() -> None:
     print(output)
 
     # Step 5. 保存
-    save_config = GLOBAL_CONFIG['save_record']
-
-    save = save_config['active']
-    save_path = save_config['save_record_folder']
-    save_name = save_config['custom_name']
-    name_type = save_config['save_record_name_type']
+    save = user_preferences.get_save_record_active()
+    save_path = user_preferences.get_save_record_folder()
+    save_name = user_preferences.get_save_record_custom_name()
+    name_type = user_preferences.get_save_record_name_type()
 
     if use_config_workflows:
         if name_type == 1:
-            save_name = datetime.datetime.now().strftime(save_config['timestamp_format'])
+            save_name = datetime.datetime.now().strftime(user_preferences.get_save_record_timestamp_format())
         elif name_type == 2:
-            save_name = save_config['custom_name']
+            save_name = user_preferences.get_save_record_custom_name()
         else:
             raise Exception("未知的保存方式")
     else:
@@ -111,7 +101,7 @@ def main() -> None:
 
     # 只有保存才会调用
     if save:
-        my_processor.save(save_path, save_name)
+        my_processor.save(save_path, save_name)    
 
 if __name__ == '__main__':
     main()
