@@ -1,3 +1,6 @@
+import os
+os.chdir('/root/homework/BJTU-Homework-Tracker/')
+
 import logging
 from logging.handlers import RotatingFileHandler
 import flask
@@ -80,4 +83,4 @@ def query_route():
         return flask.jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
