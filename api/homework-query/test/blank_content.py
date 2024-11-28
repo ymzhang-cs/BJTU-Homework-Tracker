@@ -13,7 +13,7 @@ app = flask.Flask(__name__)
 
 @app.route('/api/homework-query', methods=['POST'])
 def query_route():
-    content = [{'title': '补交课后作业1 - 数字系统基础', 'due_time': '', 'content': '', 'course_name': '数字系统基础'}, {'title': '补交实验作业1 - 数字系统基础', 'due_time': '', 'content': '未提交的实 验作业按要求补交。', 'course_name': '数字系统基础'}, {'title': '2024必做编程作业18:YGXXGL - 面向对象程序设计与C++', 'due_time': '2024-12-22 23:00', 'content': '', 'course_name': '面向对象程序设计与C++'}, {'title': '2024必做编程作业17:YCCL - 面向对象程序设计与C++', 'due_time': '2024-12-22 23:00', 'content': '', 'course_name': '面向对象程序设计与C++'}]
+    content = [{'title': '补交课后作业1 - 数字系统基础', 'due_time': 'NAT', 'content': '', 'course_name': '数字系统基础'}]
     return flask.jsonify({'result': content})
 
 if __name__ == '__main__':
