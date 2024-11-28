@@ -6,9 +6,7 @@
 
 可以配合 iOS 快捷指令 **BJTU智慧课程平台作业抓取** 使用。
 
-快捷指令导入链接：[iCloud 分享链接](https://www.icloud.com/shortcuts/f05b8d5d878340058750b00cbbf001dc)
-
-或者下载指令文件：[shortcut/BJTU智慧课程平台作业抓取.shortcut](./shortcut/BJTU智慧课程平台作业抓取.shortcut)
+快捷指令导入链接：[iCloud 分享链接](https://www.icloud.com/shortcuts/5036d3c15f824fdf9a4b03d7a6de6828)
 
 ## 开始使用
 
