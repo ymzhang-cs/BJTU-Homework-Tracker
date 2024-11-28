@@ -4,8 +4,7 @@ from Login.mis import Mis
 from Login.config import Config
 from Login.cp import CoursePlatform
 
-
-from GLOBAL import GLOBAL_CONFIG
+from Settings.user_preferences_config import user_preferences
 
 class Login:
     """
@@ -47,8 +46,8 @@ class Login:
         if type(self.method) == Mis:
             #在这里选择浏览器
             browser = ""
-            if GLOBAL_CONFIG['use_config_workflows']:
-                browser = GLOBAL_CONFIG['login']['mis']['browser']
+            if user_preferences.get_use_config_workflows():
+                browser = user_preferences.get_mis_browser()
             else:   
                 print("请选择你的浏览器")
                 print("1. Chrome")
