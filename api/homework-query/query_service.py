@@ -1,10 +1,18 @@
+import sys
 import os
-os.chdir('/root/homework/BJTU-Homework-Tracker/')
+# 获取当前脚本的目录路径
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# 获取上两级目录路径
+parent_dir = os.path.abspath(os.path.join(current_dir, '../../'))
+# 将上两级目录添加到 sys.path
+sys.path.append(parent_dir)
 
 import logging
 from logging.handlers import RotatingFileHandler
 import flask
 import datetime
+import bs4
+
 
 from Login import Login
 from Search import Search
@@ -32,10 +40,11 @@ def homework_dict_process(homework_list: list) -> list:
     """
     result = []
     for homework in homework_list:
+        content_plain_text = bs4.BeautifulSoup(homework['content'], 'html.parser').get_text()
         result.append({
-            'title': homework['title'],
+            'title': homework['title'] + ' - ' + homework['course_name'],
             'due_time': homework['end_time'],
-            'content': homework['content'],
+            'content': content_plain_text,
             'course_name': homework['course_name']
         })
     return result
