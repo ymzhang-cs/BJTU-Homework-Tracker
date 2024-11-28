@@ -45,8 +45,8 @@ def homework_dict_process(homework_list: list) -> list:
         content_plain_text = bs4.BeautifulSoup(homework['content'], 'html.parser').get_text()
         result.append({
             'title': homework['title'] + ' - ' + homework['course_name'],
-            'due_time': homework['end_time'],
-            'content': content_plain_text,
+            'due_time': homework['end_time'] if homework['end_time'] else 'NAT',
+            'content': content_plain_text if content_plain_text else '没有详情',
             'course_name': homework['course_name']
         })
     return result
