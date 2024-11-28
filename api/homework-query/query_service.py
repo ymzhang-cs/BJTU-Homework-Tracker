@@ -20,6 +20,8 @@ from Search import Search
 log_name = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
 # Configure logging
+if not os.path.exists('./logs'):
+    os.mkdir('./logs')
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('homework_query')
 handler = RotatingFileHandler(f'./logs/{log_name}.log', maxBytes=10000, backupCount=1)
