@@ -3,7 +3,7 @@ from Login.abstract import LoginMethod
 
 
 mod = LOGIN_CONFIG.register_module("cookie")
-mod.register_item("JSESSIONID", tybe=str, prompt="请输入JSESSIONID")
+mod.register_item("JSESSIONID", tybe=str, prompt="请输入JSESSIONID: ")
 
 class Cookie(LoginMethod):
     def __init__(self):

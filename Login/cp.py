@@ -4,8 +4,8 @@ import requests
 import hashlib
 
 mod = LOGIN_CONFIG.register_module("cp")
-mod.register_item("student_id", tybe=str, prompt="请输入学号")
-mod.register_item("password", tybe=str, default_value="", prompt="请输入密码,\n如果是md5请以hash:开头,\n如果是明文密码请以pass:开头,\n留空则使用默认密码:\n")
+mod.register_item("student_id", tybe=str, prompt="请输入学号: ")
+mod.register_item("password", tybe=str, prompt="请输入密码,\n如果是md5请以hash:开头,\n如果是明文密码请以pass:开头,\n留空则使用默认密码:\n")
 
 class CoursePlatform(LoginMethod):
     def __init__(self):

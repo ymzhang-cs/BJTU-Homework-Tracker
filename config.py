@@ -43,7 +43,7 @@ class ConfigItem(ConfigItemBase):
             allow_from_user_input: bool = True,
             default_value = None,
             prompt: str = None):
-        super().__init__(tybe, key, default_value is None and allow_from_user_input, prompt)
+        super().__init__(tybe, key, default_value is not None, prompt, allow_from_user_input)
         self._value = default_value
 
 class ConfigModule(ConfigItemBase):
@@ -52,9 +52,11 @@ class ConfigModule(ConfigItemBase):
         self.__children = dict()
 
     def from_dict(self, data: dict):
+        data = data or {}
         for k, v in self.__children.items():
-            assert v.required() or k in data, 'Required field of config not specified: {}'.format(k)
-            v.from_value(data[k])
+            assert not v.required() or v.allow_from_user_input or k in data, 'Required field of config not specified: {}'.format(k)
+            if k in data:
+                v.from_value(data[k])
 
     def from_value(self, value):
         self.from_dict(value)
