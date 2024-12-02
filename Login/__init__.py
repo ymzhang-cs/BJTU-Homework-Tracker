@@ -1,11 +1,12 @@
+from GLOBAL import GLOBAL_CONFIG, CONFIG
+LOGIN_CONFIG = CONFIG.register_module("login", required=True)
 from Login.abstract import LoginMethod
 from Login.cookie import Cookie
 from Login.mis import Mis
-from Login.config import Config
 from Login.cp import CoursePlatform
 
 
-from GLOBAL import GLOBAL_CONFIG
+
 
 class Login:
     """
@@ -62,5 +63,5 @@ class Login:
                     raise ValueError("请选择1或者2")
 
             kwargs['browser'] = browser
-        self.method.login(**kwargs)
+        self.method.login()
         self.cookie = self.method.getCookies()
