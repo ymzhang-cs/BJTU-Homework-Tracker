@@ -1,8 +1,9 @@
 from setuptools import setup, find_packages
+from version import __version__
 
 setup(
     name='bjtu_homework_tracker',  
-    version='0.2',      
+    version=__version__,      
     packages=find_packages(),  
     install_requires=[  
         'requests',  
@@ -13,7 +14,7 @@ setup(
         'pyyaml'
     ],
     description='A package for tracking homeworks in BJTU',
-    long_description=open('README.md').read(),
+    long_description=open('README.md', 'r', encoding='utf-8').read(),
     long_description_content_type='text/markdown',
     author='Yuanming Zhang',
     author_email='ymzhang.cs@gmail.com',
