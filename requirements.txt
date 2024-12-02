@@ -2,6 +2,5 @@ requests
 chromedriver-autoinstaller
 selenium
 pyyaml
-bs4
 beautifulsoup4
 edgedriver_autoinstaller
