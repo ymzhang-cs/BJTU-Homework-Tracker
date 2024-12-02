@@ -1,17 +1,12 @@
-from Login import LOGIN_CONFIG
 from Login.abstract import LoginMethod
 import requests
 import hashlib
-
-mod = LOGIN_CONFIG.register_module("cp")
-mod.register_item("student_id", tybe=str, prompt="请输入学号: ")
-mod.register_item("password", tybe=str, prompt="请输入密码,\n如果是md5请以hash:开头,\n如果是明文密码请以pass:开头,\n留空则使用默认密码:\n")
 
 class CoursePlatform(LoginMethod):
     def __init__(self):
         self.session = requests.session()
 
-    def login(self):
+    def login(self, student_id: str = None, password: str = None):
         BASE_URL = 'http://123.121.147.7:88/ve'
 
         # 先读一次主页
@@ -23,10 +18,11 @@ class CoursePlatform(LoginMethod):
         passcode = resp.content.decode()
 
         # 输入学号
-        student_id = mod.item('student_id').value()
+        student_id = student_id if student_id is not None else input('请输入学号: ')
 
         # 输入密码
-        password = mod.item('password').value()
+        password = password if password is not None else \
+            input('请输入密码,\n如果是md5请以hash:开头,\n如果是明文密码请以pass:开头,\n留空则使用默认密码:\n')
 
         # 判断密码格式
         if len(password) == 0:

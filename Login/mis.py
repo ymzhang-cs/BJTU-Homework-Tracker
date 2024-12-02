@@ -10,20 +10,15 @@ from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from Login import LOGIN_CONFIG
+
 from Login.abstract import LoginMethod
 
-mod = LOGIN_CONFIG.register_module("mis")
-mod.register_item("browser", tybe=str, default_value="")
-mod.register_item("webdriver_path", tybe=str, default_value="")
 
 class Mis(LoginMethod):
     def __init__(self):
         self.cookie = dict()
 
-    def login(self) -> None:
-        browser = mod.item("browser").value()
-        webdriver_path = mod.item("webdriver_path").value()
+    def login(self, browser: str = 'chrome', webdriver_path: str = None) -> None:
 
         login_url = 'https://mis.bjtu.edu.cn/module/module/104/'
         jump_page = 'https://bksycenter.bjtu.edu.cn/NoMasterJumpPage.aspx?URL=jwcZhjx&FPC=page:jwcZhjx'

@@ -1,4 +1,3 @@
-from config import Config
 import yaml
 
 def read_config() -> dict:
@@ -8,5 +7,3 @@ def read_config() -> dict:
 
 # Load the configuration file
 GLOBAL_CONFIG = read_config()
-
-CONFIG = Config()

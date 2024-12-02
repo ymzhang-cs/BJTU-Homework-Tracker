@@ -6,7 +6,7 @@ from Output import Output
 
 # 注意 这里引入了全局常量
 # Attention: This imports global variables
-from GLOBAL import GLOBAL_CONFIG, CONFIG
+from GLOBAL import GLOBAL_CONFIG
 
 import os
 import yaml
@@ -23,7 +23,7 @@ def welcome(use_config_workflows: bool) -> None:
 #     return config
 
 def main() -> None:
-    CONFIG.read_from_file("config.yaml")
+
     # 初始化：读取配置文件
     use_config_workflows = GLOBAL_CONFIG['use_config_workflows']
 
