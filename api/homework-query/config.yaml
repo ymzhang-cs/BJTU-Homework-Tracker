@@ -1,0 +1,61 @@
+
+
+####################################################
+
+# This is a placeholder file for homework-query module
+
+# Because Login Module require GLOBAL CONFIG
+
+# BUT THESE CONFIGURATIONS ARE NOT USED
+
+####################################################
+
+use_config_workflows: true
+
+# Step 1: Login
+login:
+  active: cookie
+  # Available options: mis, cookie
+  mis:
+    # Path to the webdriver (leave empty if you want to use the default path)
+    webdriver_path: ""
+  cookie:
+    # Must provided if you choose Cookie login
+    # How to get the cookie > https://github.com/ymzhang-cs/BJTU-Homework-Tracker/blob/master/FOR_NEWERS.md
+    JSESSIONID: ""
+
+
+# Step 3: Select the homework
+select:
+  active: true
+  conditions:
+    course_positive_keyword: []  # leave [] if you want to select all courses
+    course_negative_keyword: []    # leave [] if you want to select all homework
+    finish_status: unfinished      # all / finished / unfinished
+    ignore_expired_n_days: 15       # ignore the homework that expired for n days+
+    ignore_unexpired_n_days: 90        # ignore the homework that unexpired for n days+
+
+
+
+# Step 4: Process method
+
+# How to process the homework html code
+# plain_text: convert to plain text (show in console and/or save to file)
+# html: render to html (show in browser)
+process_method: html
+
+
+# Step 5: Save record
+# Save to file or not
+save_record:
+  # Save record to file or not
+  active: true
+  # Record file folder
+  save_record_folder: "./search_history"
+  # Record file name
+  # 1. Use timestamp (format configurable)
+  # 2. Custom name (may cover the previous record)
+  save_record_name_type: 1
+  timestamp_format: "%Y-%m-%d %H-%M-%S"
+  custom_name: "search_record"
+

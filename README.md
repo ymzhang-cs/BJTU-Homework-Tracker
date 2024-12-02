@@ -76,7 +76,7 @@ python run.py
 如果你有任何问题或者想法，请提交 issue。 若要认领 issue，请在 issue 下评论，我们会将 issue 分配给你。
 如果有想要实现的功能，请先提交 issue 并认领，然后再提交 PR。
 
-与 issue 关联的 PR 请在提交 PR 时在 PR 描述中注明 `Fixes #xx`，以便 issue 关联。没有关联任何 issue 的 PR 会被关闭。
+与 issue 关联的 PR 请提交到对应 branch。在提交 PR 时在 PR 描述中注明 `Fixes #xx`，以便与 issue 关联。没有关联任何 issue 的 PR 会被关闭。
 
 ## License
 
