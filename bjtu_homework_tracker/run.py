@@ -1,15 +1,9 @@
 import datetime
+import yaml
 
 from Login import Login
 from Search import Search
 from Output import Output
-
-# 注意 这里引入了全局常量
-# Attention: This imports global variables
-from GLOBAL import GLOBAL_CONFIG
-
-import os
-import yaml
 
 def welcome(use_config_workflows: bool) -> None:
     print("欢迎使用作业查询系统")
@@ -17,15 +11,17 @@ def welcome(use_config_workflows: bool) -> None:
     print("当前模式：", "使用config" if use_config_workflows else "手动选择")
     return
 
-# def read_config() -> dict:
-#     with open("config.yaml", "r", encoding='utf-8') as f:
-#         config = yaml.load(f, Loader=yaml.FullLoader)
-#     return config
+def read_config() -> dict:
+    with open("config.yaml", "r", encoding='utf-8') as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+    return config
 
 def main() -> None:
 
+    config = read_config()
+
     # 初始化：读取配置文件
-    use_config_workflows = GLOBAL_CONFIG['use_config_workflows']
+    use_config_workflows = config['use_config_workflows']
 
     # 欢迎界面
     welcome(use_config_workflows)
@@ -35,9 +31,9 @@ def main() -> None:
     login_method = None
     login_args = None
     if use_config_workflows:
-        login_method = GLOBAL_CONFIG['login']['active']
-        assert type(GLOBAL_CONFIG['login']) == dict
-        login_args = GLOBAL_CONFIG['login'].get(login_method, {})
+        login_method = config['login']['active']
+        assert type(config['login']) == dict
+        login_args = config['login'].get(login_method, {})
 
     # 初始化登录类
     my_login = Login(login_method)
@@ -57,9 +53,9 @@ def main() -> None:
 
     # Step 3. 课程筛选
     if use_config_workflows:
-        select_status = GLOBAL_CONFIG['select']['active']
+        select_status = config['select']['active']
         if select_status:
-            select_args = GLOBAL_CONFIG['select']['conditions']
+            select_args = config['select']['conditions']
             my_search.select(**select_args)
         else:
             print("提示：配置文件中未启用筛选条件")
@@ -71,7 +67,7 @@ def main() -> None:
     # Step 4. 处理
     process_type = None
     if use_config_workflows:
-        process_type = GLOBAL_CONFIG['process_method']
+        process_type = config['process_method']
     else:
         print("支持的处理方式：", Output.show_methods())
         process_type = input("请选择处理方式：")
@@ -82,7 +78,7 @@ def main() -> None:
     print(output)
 
     # Step 5. 保存
-    save_config = GLOBAL_CONFIG['save_record']
+    save_config = config['save_record']
 
     save = save_config['active']
     save_path = save_config['save_record_folder']
