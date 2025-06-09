@@ -4,3 +4,6 @@ selenium
 pyyaml
 beautifulsoup4
 edgedriver_autoinstaller
+# OCR
+pytesseract
+Pillow

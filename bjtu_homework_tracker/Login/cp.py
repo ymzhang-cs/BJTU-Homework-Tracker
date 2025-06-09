@@ -1,6 +1,13 @@
+from io import BytesIO
+import logging
+import re
+from PIL import Image
+import pytesseract
 from Login.abstract import LoginMethod
 import requests
 import hashlib
+
+logging.basicConfig(level=logging.INFO)
 
 class CoursePlatform(LoginMethod):
     def __init__(self):
@@ -14,8 +21,15 @@ class CoursePlatform(LoginMethod):
 
         # 获取验证码
         self.session.get(BASE_URL + '/GetImg')
-        resp = self.session.get(BASE_URL + '/confirmImg')
-        passcode = resp.content.decode()
+        # 将验证码图片转换为PIL.Image
+        image = Image.open(BytesIO(self.session.get(BASE_URL + '/GetImg').content))
+        # 使用pytesseract识别验证码
+        passcode = pytesseract.image_to_string(image)
+        # 使用正则表达式去除验证码中的非数字
+        passcode = re.sub(r'[^0-9]', '', passcode)
+        # 显示验证码
+        # image.show()
+        logging.info(f"验证码: {passcode}")
 
         # 输入学号
         student_id = student_id if student_id is not None else input('请输入学号: ')
@@ -33,17 +47,19 @@ class CoursePlatform(LoginMethod):
             if password.startswith('pass:'):
                 password = password[len('pass:'):]
             password_hash = hashlib.md5(password.encode()).hexdigest()
-
+        logging.info(f"哈希密码: {password_hash}")
         # 登录
-        resp = self.session.post(BASE_URL + '/s.shtml', data={
+        req_data = {
             'login': 'main_2',
             'qxkt_type': '',
             'qxkt_url': '',
             'username': student_id,
             'password': password_hash,
             'passcode': passcode
-        }, allow_redirects=True)
-
+        }
+        logging.info(f"请求数据: {req_data}")
+        resp = self.session.post(BASE_URL + '/s.shtml', data=req_data, allow_redirects=True)
+        logging.info(f"登录响应: {resp.content.decode(resp.encoding or 'utf-8')}")
         if not 200 <= resp.status_code < 300 or resp.content.decode(resp.encoding or 'utf-8').find('alert(') != -1:
             raise Exception('Failed logging in.')
 

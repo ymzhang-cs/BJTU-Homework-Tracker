@@ -15,7 +15,7 @@
 
 支持的登录方式：
 
-- 智慧课程平台账号登录
+- 智慧课程平台账号登录（现已支持验证码识别）
 - MIS 系统登录
 - Cookie登录
 
@@ -45,6 +45,9 @@ cd BJTU-Homework-Tracker
 ```bash
 pip install -r requirements.txt
 ```
+
+如需使用验证码识别，请额外安装 [Tesseract-OCR 引擎](https://tesseract-ocr.github.io/tessdoc/Installation.html)。
+
 
 **2. 配置 config.yaml（可选，推荐）**
 
