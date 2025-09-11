@@ -10,6 +10,9 @@ class Search:
         self.cookie = cookie
         self.print_detail = print_detail
 
+        # sessionid
+        self.sessionid = None
+
         # 课程列表
         # 格式同 response 里的 courseList
         # [{id, name, course_num, ...}, ...]
@@ -54,6 +57,14 @@ class Search:
         self.xq = self._getXq()
 
     def _requestGet(self, url: str, referer_type: int, referer_info: dict = None, referer_value: str = None) -> dict:
+        """
+        请求GET请求
+        :param url: 请求URL
+        :param referer_type: 请求头中的Referer类型。0: CourseList，1: HomeWorkList，-1: 其他（填写在referer_value中）
+        :param referer_info: 请求头中的Referer信息
+        :param referer_value: 请求头中的Referer值
+        :return: 请求响应
+        """
         header = self.common_header
         if referer_type == 0:
             header["Referer"] = self.header_referer["CourseList"]
@@ -61,7 +72,8 @@ class Search:
             header["Referer"] = self.header_referer["HomeWorkList"].format(**referer_info)
         elif referer_type == -1:
             header["Referer"] = referer_value
-        
+        if self.sessionid:
+            header["sessionId"] = self.sessionid
         response = requests.get(url, headers=header)
         return response.json()
 
@@ -73,10 +85,18 @@ class Search:
             print(f"当前学期: {response['result'][0]['xqCode']}")
         return response["result"][0]["xqCode"]
 
+    def _getSessionid(self) -> str:
+        url = "http://123.121.147.7:88/ve/back/coursePlatform/message.shtml?method=getArticleList"
+        referer_value = "http://123.121.147.7:88/ve/back/coursePlatform/coursePlatform.shtml?method=toCoursePlatformIndex"
+        response = self._requestGet(url, referer_type=-1, referer_value=referer_value)
+        print(f"已获取到sessionid: {response['sessionId']}")
+        return response["sessionId"]
+
     def _getCourseList(self) -> list:
         url = ("http://123.121.147.7:88/ve/back/coursePlatform/course.shtml?"
                "method=getCourseList&pagesize=100&page=1&xqCode={xq}").format(xq = self.xq)
         response = self._requestGet(url, referer_type=0)
+        print(f"请求课程列表: {response}")
         return response["courseList"]
 
     def _getHomeworkList(self, course_index: int) -> list:
